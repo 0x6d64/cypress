@@ -3,6 +3,7 @@
 
 import os
 import subprocess
+import time
 
 
 class FsWebcamObject(object):
@@ -13,13 +14,20 @@ class FsWebcamObject(object):
         self.frames_to_take = 1
         self.input_device = input_device
         self.delay = 0
+        self.busy = False
 
     def take_image(self, filename, constrain_parameters=True):
-        if constrain_parameters:
-            self._constrain_parameters()
-        cmd = self._get_command_string(filename)
-        fs_exit_code = subprocess.Popen(args=cmd, shell=False)
-        return fs_exit_code
+        if self.busy:
+            return -1
+        else:
+            self.busy = True
+            if constrain_parameters:
+                self._constrain_parameters()
+            cmd = self._get_command_string(filename)
+            p = subprocess.Popen(args=cmd, shell=False)
+            fs_exit_code = p.communicate()
+            self.busy = False
+            return fs_exit_code
 
     def _get_command_string(self, filename):
         command = ['fswebcam']
@@ -51,7 +59,9 @@ if __name__ == '__main__':
     webcam.frames_to_take = 2
     webcam.frames_to_skip = 5
     current_dir = os.path.dirname(os.path.realpath(__file__))
-    webcam.take_image(os.path.join(current_dir, 'test.jpg'))
+    res1 = webcam.take_image(os.path.join(current_dir, 'test.jpg'))
+    res2 = webcam.take_image(os.path.join(current_dir, 'test.jpg'))
+    print('result 1, 2: {!s}, {!s}'.format(res1, res2))
 
     # subprocess.call(['ls', '-la'])
 
