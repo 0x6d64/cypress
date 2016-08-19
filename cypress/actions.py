@@ -29,7 +29,10 @@ def update_timeline_with_image(api):
     webcam.frames_to_skip = 5
 
     with tempfile.NamedTemporaryFile(prefix='cypress-', suffix='.jpg') as tf:
-        webcam.take_image(tf.name)
-        time.sleep(5)
+        success = False
+        while not success:
+            r = webcam.take_image(tf.name)
+            success = r != -1
+        time.sleep(2)
         api.update_with_media(filename=os.path.abspath(tf.name), status=r'', file=tf)
     pass

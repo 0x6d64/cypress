@@ -1,6 +1,6 @@
 # cypress
 
-A brief excursion into the twitter API and monitoring data from similar interfaces.
+a learning excercise in using the tweepy twitter API.
 
 ## function
 
@@ -11,6 +11,11 @@ Cypress connects to a twitter account and watches direct messages sent to that a
 Currently only one action is supported:
 - the command "take picture" triggers a connected webcam and posts the image as a status update
 - the command "delete n" deletes a status update with index n (0 being the most recent status)
+- the command "say" creates a status update with the text following the command (truncated to 140 characters)
+
+## planned features
+- take picture a regular intervals for later revrieval, start and stop taking pictures by sending a command via direct message
+- look for movement in image and notify users on movement
 
 ## known issues
 - the size if the image uploaded is limited

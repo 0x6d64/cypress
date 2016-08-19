@@ -3,7 +3,6 @@
 
 import os
 import subprocess
-import time
 
 
 class FsWebcamObject(object):
